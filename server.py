@@ -35,7 +35,7 @@ def handle_client(conn, address):
     conn.close()
 
 def server_program():
-    host = '192.168.1.90'
+    host = '172.17.255.255'
     port = 5001  # Cambiar el puerto si es necesario
 
     server_socket = socket.socket()
