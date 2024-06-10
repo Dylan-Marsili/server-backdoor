@@ -115,8 +115,8 @@ def handle_interactive_session(admin_conn, client_conn):
 
 def server_program(hostip):
     host = hostip  # IP local
-    client_port = 53454  # Puerto para los clientes normales
-    admin_port = 53446  # Puerto específico para el cliente especial (admin)
+    client_port = 18000  # Puerto para los clientes normales
+    admin_port = 18001  # Puerto específico para el cliente especial (admin)
 
     # Configurar socket para clientes normales
     client_socket = socket.socket()
