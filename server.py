@@ -154,4 +154,4 @@ def server_program(hostip):
     admin_thread.join()
 
 if __name__ == '__main__':
-    server_program(get_server_ip())
+    server_program("172.17.0.1")
