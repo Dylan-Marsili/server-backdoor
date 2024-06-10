@@ -5,6 +5,16 @@ clients = {}  # Diccionario para almacenar conexiones de clientes y direcciones
 admin_connection = None  # Conexión del cliente especial (admin)
 lock = threading.Lock()  # Para proteger el acceso concurrente al diccionario de clientes
 
+def get_server_ip():
+    try:
+        # Crear un socket y obtener el nombre del host
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        server_ip = s.getsockname()[0]
+        s.close()
+        return server_ip
+    except socket.error:
+        return "No se pudo obtener la dirección IP del servidor"
 def handle_client(conn, address):
     client_id = f"{address[0]}:{address[1]}"  # Identificador único para el cliente
     with lock:
@@ -103,8 +113,8 @@ def handle_interactive_session(admin_conn, client_conn):
         except ConnectionAbortedError:
             break
 
-def server_program():
-    host = '172.17.255.255'  # IP local
+def server_program(hostip):
+    host = hostip  # IP local
     client_port = 53454  # Puerto para los clientes normales
     admin_port = 53446  # Puerto específico para el cliente especial (admin)
 
@@ -121,6 +131,7 @@ def server_program():
     admin_socket.listen(1)  # Solo una conexión de admin permitida
 
     print(f"Servidor escuchando en puertos {client_port} (clientes) y {admin_port} (admin)")
+    print(host)
 
     def accept_clients():
         while True:
@@ -143,4 +154,4 @@ def server_program():
     admin_thread.join()
 
 if __name__ == '__main__':
-    server_program()
+    server_program(get_server_ip())
