@@ -1,13 +1,25 @@
 const net = require('net');
 const clients = [];
+const os = require('os');
+const dns = require('dns');
 
+function obtenerIPDelHost() {
+    const interfaces = os.networkInterfaces();
+    for (let iface in interfaces) {
+        for (let alias of interfaces[iface]) {
+            if (alias.family === 'IPv4' && !alias.internal) {
+                return alias.address;
+            }
+        }
+    }
+    return null;
+}
 const PORT = 5001;
 const ADMIN_KEY = 'admin123';  // Clave para identificar al admin
 
 const server = net.createServer((socket) => {
     let isAdmin = false;
     let clientKey = `${socket.remoteAddress}:${socket.remotePort}`;
-
 
     if (socket.remoteAddress === '::1') {
         socket.end();
@@ -110,5 +122,5 @@ function handleAdminToClient(adminSocket, clientSocket) {
 }
 
 server.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
+    console.log(`Servidor escuchando en el puerto ${obtenerIPDelHost()}:${PORT}`);
 });
