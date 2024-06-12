@@ -8,10 +8,8 @@ const server = net.createServer((socket) => {
     let isAdmin = false;
     let clientKey = `${socket.remoteAddress}:${socket.remotePort}`;
 
-    console.log(`Nueva conexión desde ${clientKey}`);
 
     if (socket.remoteAddress === '::1') {
-        console.log('Conexión desde ::1 descartada');
         socket.end();
         return;
     }
