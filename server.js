@@ -10,6 +10,12 @@ const server = net.createServer((socket) => {
 
     console.log(`Nueva conexión desde ${clientKey}`);
 
+    if (socket.remoteAddress === '::1') {
+        console.log('Conexión desde ::1 descartada');
+        socket.end();
+        return;
+    }
+
     socket.once('data', (data) => {
         const message = data.toString().trim();
 
